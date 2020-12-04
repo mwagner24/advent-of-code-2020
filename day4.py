@@ -11,6 +11,7 @@ def read_passports_to_dict(file):
 	with open(file, 'r+') as f:
 		text = f.read()		
 
+	# Consecutive newlines indicate new Passport
 	text = text.split('\n\n')
 	text = [t.replace('\n',' ').split(' ') for t in text]
 
@@ -27,7 +28,6 @@ def validate_fields(passports):
 	'''Confirm that required passport fields are present'''
 	valid = []
 	req_fields = ['byr', 'iyr', 'eyr', 'hgt', 'hcl', 'ecl', 'pid']
-
 	for k in passports:
 		valid_count = 0
 		for req in req_fields:
@@ -35,11 +35,12 @@ def validate_fields(passports):
 				valid_count += 1
 		if valid_count == 7:
 			valid.append(passports[k])
+
 	return valid
 
 def validate_between(field, min_, max_):
 	'''Validator function to confirm a number is between two numbers'''
-	return int(field) >= min_ and int(field) <= max_
+	return  min_ <= int(field) <= max_
 
 def validate_height(hgt):
 	'''Validate height units and min/max'''
@@ -64,8 +65,7 @@ def validate_hair_color(hcl):
 		return False
 	else:
 		for char in hcl[1:]:
-			if char not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-			'a', 'b', 'c', 'd', 'e', 'f']:
+			if char not in '0123456789abcdef':
 				return False
 		return True
 
@@ -79,12 +79,14 @@ def validate_pid(pid):
 		return False
 	else:
 		for p in pid:
-			if p not in ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']:
+			if p not in '0123456789':
 				return False
 	return True
 
 def strict_validate_passports(passports):
 	'''Validate each field's values'''
+	
+	# Reduce passport space to those with all required fields
 	passports = validate_fields(passports)
 
 	strict_valid = []
