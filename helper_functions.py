@@ -5,6 +5,6 @@ def readfile(file):
 	with open(file, 'r') as f:
 		return [ a.rstrip() for a in f.readlines() ]
 
-def aprint(answer, program):
+def aprint(answer, *args):
 	'''Prints answers in standard format'''
-	print(f'Answer {answer}:', program)
+	print(f'Answer {answer}:', *args)

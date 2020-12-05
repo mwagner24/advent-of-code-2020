@@ -15,8 +15,9 @@ class BoardingPass(object):
 		self.seat_instructions = instructions[-3:]
 
 	@staticmethod
-	def iter_split(instructions, start_min, start_max, upper='B', lower='F'):
-		min_, max_ = start_min, start_max
+	def iter_split(instructions, upper='B', lower='F'):
+		'''Binary Partitioning'''
+		min_, max_ = 0, 2**len(instructions) - 1
 
 		for half in instructions:
 			if half == upper:
@@ -31,12 +32,11 @@ class BoardingPass(object):
 
 	def get_row(self):
 		'''Row-wise Binary Space Partitioning'''
-		return self.iter_split(self.row_instructions, 0, 127)
-
+		return self.iter_split(self.row_instructions)
 
 	def get_seat(self):
 		'''Column-wise Binary Space Partitioning'''
-		return self.iter_split(self.seat_instructions, 0, 7, upper='R', lower='L')
+		return self.iter_split(self.seat_instructions, upper='R', lower='L')
 
 	def get_seat_id(self):
 		row = self.get_row()
