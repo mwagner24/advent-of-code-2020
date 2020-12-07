@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 from helper_functions import readfile, aprint
 
-
 # Day 3: Toboggan Trajectory -- AOC 2020
-
 
 def move_from_slope(coords, x, y):
 	width = len(coords[0])
@@ -25,8 +23,6 @@ def move_from_slope(coords, x, y):
 			trees_encountered += 1
 
 	return trees_encountered
-
-
 
 if __name__ == '__main__':
 

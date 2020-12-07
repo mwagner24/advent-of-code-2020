@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 from helper_functions import readfile, aprint
 
-
 # Day 1: Report Repair -- AOC 2020
 
 def find_two_entries(entries):

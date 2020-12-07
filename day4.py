@@ -5,7 +5,6 @@ import re
 
 # Day 4: Passport Processing -- AOC 2020
 
-
 def read_passports_to_dict(file):
 	'''Parse input and return dict of each passport's metadata'''
 	with open(file, 'r+') as f:
@@ -103,7 +102,6 @@ def strict_validate_passports(passports):
 			strict_valid.append(passport)
 
 	return strict_valid
-
 
 if __name__ == '__main__':
 	passports = read_passports_to_dict('inputs/day4.txt')

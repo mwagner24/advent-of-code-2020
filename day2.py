@@ -1,9 +1,7 @@
 #!/usr/bin/python3
 from helper_functions import readfile, aprint
 
-
 # Day 2: Password Philosophy -- AOC 2020
-
 
 class OTCP(object):
 	'''Validates a password under Official Toboggan Corporate Policy'''
@@ -14,7 +12,6 @@ class OTCP(object):
 		self.policy_second = int(self.pass_split[0].split(policy_delim)[1])
 		self.alpha_instance = self.pass_split[1][0]
 		self._password = self.pass_split[-1]
-
 
 	def _validate_password(self):
 		'''Validates a password under the new OTCP policy'''

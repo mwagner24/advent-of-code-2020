@@ -5,7 +5,6 @@ import re
 
 # Day 5: Binary Boarding -- AOC 2020
 
-
 class BoardingPass(object):
 	'''Boarding Pass Object for Binary Space Partitioning'''
 
@@ -42,7 +41,6 @@ class BoardingPass(object):
 		row = self.get_row()
 		seat = self.get_seat()
 		return (row * 8) + seat
-
 
 if __name__ == '__main__':
 	boarding_passes = readfile('inputs/day5.txt')
