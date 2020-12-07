@@ -4,9 +4,11 @@ from helper_functions import readfile, aprint
 # Day 6: Custom Customs -- AOC 2020
 
 def get_unique_answers(group):
+    '''Return number of unique 'yes' answers for a group'''
     return len(set([l for l in group.replace(' ', '')]))
 
 def get_all_answers_yes(group):
+    '''Return count of unanimous "yes" answers within group by member''' 
     group_dict = {}
     members = group.split(' ')
     for member in members:

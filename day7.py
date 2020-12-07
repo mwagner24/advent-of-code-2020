@@ -5,11 +5,13 @@ import re
 # Day 7: Handy Haversacks -- AOC 2020
 
 def parse_rule(rule):
+    '''Regex lines of file input to return key, value pairs of bag colors and their components'''
     key = re.findall(r'([a-z ]+) bags contain', rule)[0]
     values = re.findall(r'(\d+) ([a-z ]+) bag', rule)
     return key, [v[1] for v in values for a in range(int(v[0]))]
 
 def get_children(bag, bags_dict, contains):
+    '''Recursively step through each bag color to find if child exists'''
     if contains in bags_dict[bag]:
         return True
     else:
@@ -18,6 +20,7 @@ def get_children(bag, bags_dict, contains):
                 return True
 
 def get_n_bags(bag, bags_dict, bag_of_bags=[], debug=True):
+    '''Recursively step through a bag color to find number of nested bags'''
     if debug:
         print(f'Working on bag: {bag}')
     bag_of_bags.append(len(bags_dict[bag]))
