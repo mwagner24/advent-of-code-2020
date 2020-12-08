@@ -3,40 +3,15 @@ from helper_functions import readfile, aprint
 
 # Day 8: Handheld Halting -- AOC 2020
 
-def run_instruction(instructions, run_instructions=[], accumulator=0, i=0):
-    '''Run boot code instructions until an instruction repeat'''
-    if i in run_instructions:
+def run_boot(instructions, run_instructions=[], accumulator=0, i=0, end=False):
+    '''Run boot code instructions'''
+    if (i in run_instructions and not end) or (end and i == len(instructions)):
         return accumulator
-    else:
-        run_instructions.append(i)
-
-    instruction_split = instructions[i].split(' ')
-    instruction = instruction_split[0]
-    instruction_value = int(instruction_split[1])
-
-    if instruction == 'acc':
-        accumulator += instruction_value
-        i += 1
-    elif instruction == 'jmp':
-        i += instruction_value
-    else:
-        i += 1
-
-    return run_instruction(instructions, run_instructions=run_instructions, 
-        accumulator=accumulator, i=i)
-
-def fix_instruction(instructions, run_instructions=[], accumulator=0, i=0):
-    '''Run altered boot code instructions until end of program reached'''
-    
-    # Program ends when instruction number == total number of instructions + 1
-    if i == len(instructions):
-        return accumulator
-    # Terminate on single-instruction infinite loops, repeat instructions, or instructions beyond scope
-    elif i > len(instructions) or instructions[i] in ['jmp +0', 'jmp 0', 'jmp -0'] or i in run_instructions:
+    elif (i in run_instructions and end) or (instructions[i] in ['jmp 0', 'jmp +0', 'jmp -0']):
         return False
     else:
         run_instructions.append(i)
-    
+
     instruction_split = instructions[i].split(' ')
     instruction = instruction_split[0]
     instruction_value = int(instruction_split[1])
@@ -48,22 +23,22 @@ def fix_instruction(instructions, run_instructions=[], accumulator=0, i=0):
         i += instruction_value
     else:
         i += 1
-    
-    return fix_instruction(instructions, run_instructions=run_instructions, 
-            accumulator=accumulator, i=i)
+
+    return run_boot(instructions, run_instructions=run_instructions, 
+        accumulator=accumulator, i=i, end=end)
 
 if __name__ == '__main__':
     instructions = readfile('inputs/day8.txt', split=None)
     
-    aprint(1, run_instruction(instructions))
+    aprint(1, run_boot(instructions))
 
     # Brute force solve the corruption
     for ind, c in enumerate(instructions):
         # Make a single change of jmp -> nop 
         if 'jmp' in c:
             instructions[ind] = c.replace('jmp', 'nop')
-            if fix_instruction(instructions, run_instructions=[], accumulator=0, i=0):
-                aprint(2, fix_instruction(instructions, run_instructions=[], accumulator=0, i=0))
+            if run_boot(instructions, run_instructions=[], accumulator=0, i=0, end=True):
+                aprint(2, run_boot(instructions, run_instructions=[], accumulator=0, i=0, end=True))
                 break
             else:
                 # Revert change for next iteration
@@ -72,8 +47,8 @@ if __name__ == '__main__':
         # Make a single change of nop -> jmp
         elif 'nop' in c:
             instructions[ind] = c.replace('nop', 'jmp')
-            if fix_instruction(instructions, run_instructions=[], accumulator=0, i=0):
-                aprint(2, fix_instruction(instructions, run_instructions=[], accumulator=0, i=0))
+            if run_boot(instructions, run_instructions=[], accumulator=0, i=0, end=True):
+                aprint(2, run_boot(instructions, run_instructions=[], accumulator=0, i=0, end=True))
                 break
             else:
                 # Revert change for next iteration
