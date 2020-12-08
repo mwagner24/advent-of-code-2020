@@ -34,22 +34,17 @@ if __name__ == '__main__':
 
     # Brute force solve the corruption
     for ind, c in enumerate(instructions):
-        # Make a single change of jmp -> nop 
-        if 'jmp' in c:
-            instructions[ind] = c.replace('jmp', 'nop')
-            if run_boot(instructions, run_instructions=[], accumulator=0, i=0, end=True):
-                aprint(2, run_boot(instructions, run_instructions=[], accumulator=0, i=0, end=True))
-                break
+
+        # Make a single change if a change operation present
+        if 'jmp' in c or 'nop' in c:
+            # Temporary copy of instructions to check corruption
+            c_instructions = list(instructions)
+            
+            if 'jmp' in c:
+                c_instructions[ind] = c.replace('jmp', 'nop')
             else:
-                # Revert change for next iteration
-                instructions[ind] = c.replace('nop', 'jmp')
-        
-        # Make a single change of nop -> jmp
-        elif 'nop' in c:
-            instructions[ind] = c.replace('nop', 'jmp')
-            if run_boot(instructions, run_instructions=[], accumulator=0, i=0, end=True):
-                aprint(2, run_boot(instructions, run_instructions=[], accumulator=0, i=0, end=True))
+                c_instructions[ind] = c.replace('nop', 'jmp')
+
+            if run_boot(c_instructions, run_instructions=[], accumulator=0, i=0, end=True):
+                aprint(2, run_boot(c_instructions, run_instructions=[], accumulator=0, i=0, end=True))
                 break
-            else:
-                # Revert change for next iteration
-                instructions[ind] = c.replace('jmp', 'nop')
